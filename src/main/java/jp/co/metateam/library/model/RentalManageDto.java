@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import jp.co.metateam.library.values.RentalStatus;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
@@ -115,9 +117,11 @@ public Optional<String> validStatus(Integer previousRentalStatus){
 }
 public boolean isRentalDateValid(){
     LocalDate localDate = LocalDate.now();
-    Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    Instant instant = this.expectedRentalOn.toInstant();
+   // Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    LocalDate expectedRentalOn = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 
-    if(date == this.expectedRentalOn){
+    if(localDate.isEqual(expectedRentalOn)){
         return true;
     }
     return false;  

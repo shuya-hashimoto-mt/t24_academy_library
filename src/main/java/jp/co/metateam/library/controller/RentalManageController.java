@@ -96,6 +96,21 @@ public class RentalManageController {
             if(result.hasErrors()){
                 throw new Exception("Validdation error.");
             }
+
+            int rentalStatus = rentalManageDto.getStatus();
+            if(rentalStatus == RentalStatus.RENT_WAIT.getValue() || rentalStatus == RentalStatus.RENTAlING.getValue()){
+                //貸出ステータスが「貸出待ち」「貸出中」の貸出件数を取得する
+                long rentalAvailableSattusCount = rentalManageService.countByStockIdAndStatusIn(rentalManageDto.getStockId());
+                //貸出可能な期間に該当する貸出件数を取得する
+                long retanlAvailableTermCount = rentalManageService.countByStockIdAndStatusAndtermsIn(rentalManageDto.getStockId(),rentalManageDto.getExpectedReturnOn(),rentalManageDto.getExpectedRentalOn());
+
+                if(rentalAvailableSattusCount != retanlAvailableTermCount){
+                    String errorMsg = "選択された在庫は現在、貸出できません";
+                    result.addError(new FieldError("rentalManageDto","stockId",errorMsg));
+                    throw new Exception("Stock unavaliable error.");
+                }
+            }
+
             //登録処理
             this.rentalManageService.save(rentalManageDto);
 
@@ -106,7 +121,7 @@ public class RentalManageController {
             ra.addFlashAttribute("rentalManageDto", rentalManageDto);
             ra.addFlashAttribute("org.springframework.validation.BindingResult.rentalManageDto", result);
 
-            return "redirect:/rental/index";
+            return "redirect:/rental/add";
         }
     }
 
@@ -166,12 +181,14 @@ public class RentalManageController {
                 long retanlAvailableTermCount = rentalManageService.countByStockIdAndStatusAndIdNotAndTermsIn(rentalManageDto.getStockId(), rentalManageDto.getId(),rentalManageDto.getExpectedReturnOn(),rentalManageDto.getExpectedRentalOn());
 
                 if(rentalAvailableSattusCount != retanlAvailableTermCount){
-                    ra.addFlashAttribute("erroMsg", "選択された在庫は現在、貸出できません");
-                    throw new Exception("Stock unavaliable error.");
+                    String errorMsg = "選択された在庫は現在、貸出できません";
+                    result.addError(new FieldError("rentalManageDto","stockId",errorMsg));
+;                   throw new Exception("Stock unavaliable error.");
                 }
 
                 if(retanlAvailableTermCount < 1){
-                    ra.addFlashAttribute("erroMsg", "選択された在庫は新規で貸出してください");
+                    String errorMsg = "選択された在庫は新規で貸出してください";
+                    result.addError(new FieldError("rentalManageDto","stockId",errorMsg));
                     throw new Exception("Stock unavaliable error.");
                 }
             }
@@ -194,7 +211,7 @@ public class RentalManageController {
             model.addAttribute("stockList", stockList);
             model.addAttribute("rentalStatus", RentalStatus.values());
 
-            return "redirect:/rental/edit";
+            return "redirect:/rental/{id}/edit";
         }
     }
 }
