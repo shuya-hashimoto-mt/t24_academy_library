@@ -50,6 +50,11 @@ public class RentalManageService {
     }
 
     @Transactional
+    public long countByStockIdAndStatusIn(String stock_id){
+        return this.rentalManageRepository.countByStockIdAndStatusIn(stock_id);
+    }
+
+    @Transactional
     public long countByStockIdAndStatusInAndIdNot(String stockId, Long Id){
         return this.rentalManageRepository.countByStockIdAndStatusInAndIdNot(stockId, Id);
     }
