@@ -56,6 +56,28 @@ public class RentalManageDto {
     private Account account;
 
 
+    /**
+     * 貸出予定日と返却予定日の妥当性チェック
+     * 
+     * @param expectedRentalOn 貸出予定日
+     * @param expectedReturnOn 返却予定日
+     * @return
+     */
+public Optional<String> compareDates(){
+    Date rentalOn = this.expectedRentalOn;
+    Date returnOn = this.expectedReturnOn;
+    String errMsg = "返却予定日は貸出予定日より後の日付を入力してください";
+
+    int comparisonResult = rentalOn.compareTo(returnOn);
+
+    if(comparisonResult > 0){
+        return Optional.of(errMsg);
+    }
+    return Optional.empty();
+}
+
+
+
 /**
  * 貸出ステータスチェック
  * 
@@ -103,8 +125,8 @@ public Optional<String> validStatus(Integer previousRentalStatus){
             return Optional.of(String.format(errFormat,RentalStatus.CANCELED.getText(),RentalStatus.RENT_WAIT.getText()));
         }else if(this.status == RentalStatus.RENTAlING.getValue()){
             return Optional.of(String.format(errFormat,RentalStatus.CANCELED.getText(),RentalStatus.RENTAlING.getText()));
-        }else if(this.status == RentalStatus.CANCELED.getValue()){
-            return Optional.of(String.format(errFormat,RentalStatus.CANCELED.getText(),RentalStatus.CANCELED.getText()));
+        }else if(this.status == RentalStatus.RETURNED.getValue()){
+            return Optional.of(String.format(errFormat,RentalStatus.CANCELED.getText(),RentalStatus.RETURNED.getText()));
         }
     }
 

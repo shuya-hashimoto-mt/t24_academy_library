@@ -97,6 +97,14 @@ public class RentalManageController {
                 throw new Exception("Validdation error.");
             }
 
+
+            Optional<String> compareDates = rentalManageDto.compareDates();
+            if(compareDates.isPresent()){
+                result.addError(new FieldError("rentalManage","expectedReturnOn",compareDates.get()));
+                throw new Exception("Validation Error");
+            }
+
+
             int rentalStatus = rentalManageDto.getStatus();
             if(rentalStatus == RentalStatus.RENT_WAIT.getValue() || rentalStatus == RentalStatus.RENTAlING.getValue()){
                 //貸出ステータスが「貸出待ち」「貸出中」の貸出件数を取得する
@@ -163,6 +171,14 @@ public class RentalManageController {
             if (result.hasErrors()) {
                 throw new Exception("Validation error.");
             }
+
+
+            Optional<String> compareDates = rentalManageDto.compareDates();
+            if(compareDates.isPresent()){
+                result.addError(new FieldError("rentalManage","expectedReturnOn",compareDates.get()));
+                throw new Exception("Validation Error");
+            }
+
 
             RentalManage rentalManage = this.rentalManageService.findById(Long.valueOf(id));
             Optional<String> validError = rentalManageDto.validStatus(rentalManage.getStatus());
