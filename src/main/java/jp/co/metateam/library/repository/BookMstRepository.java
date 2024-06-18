@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookMstRepository extends JpaRepository<BookMst, Long> {
+
 	List<BookMst> findAll();
 
 	Optional<BookMst> findById(BigInteger id);
