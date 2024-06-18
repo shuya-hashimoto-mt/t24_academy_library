@@ -25,5 +25,7 @@ public interface RentalManageRepository extends JpaRepository<RentalManage, Long
     @Query("SELECT COUNT(rm) FROM RentalManage rm WHERE rm.stock.id = ?1 AND rm.status IN (0, 1) AND rm.id <> ?2 AND (rm.expectedRentalOn > ?3 OR rm.expectedReturnOn < ?4)")
     long countByStockIdAndStatusAndIdNotAndTermsIn(String stock_id, Long id, Date expectedReturnOn, Date expectedRentalOn);
 
+    @Query("SELECT rm FROM RentalManage rm  WHERE rm.stock.id = ?1 AND rm.status IN (?2, ?3)")
+    List <RentalManage> findByStockIdAndStatus(String stock_id, Integer status1, Integer status2);
 }
         

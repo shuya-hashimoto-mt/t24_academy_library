@@ -1,5 +1,7 @@
 package jp.co.metateam.library.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import org.springframework.validation.FieldError;
 
 
 import jakarta.validation.Valid;
-import jp.co.metateam.library.constants.Constants;
 import jp.co.metateam.library.model.RentalManage;
 import jp.co.metateam.library.model.RentalManageDto;
 import jp.co.metateam.library.service.RentalManageService;
@@ -89,6 +90,28 @@ public class RentalManageController {
 
 
 
+    @GetMapping("/rental/{id}/{rentalDate}/add")                    
+    public String add(@PathVariable("id") List<String> idList, @PathVariable("rentalDate") Date expectedRentalOn, Model model){
+        List <Account> accounts = this.accountService.findAll();
+        List <Stock> stockList = this.stockService.getList(idList);
+        
+
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("stockList", stockList);           
+        model.addAttribute("rentalStatus", RentalStatus.values());
+
+        if(!model.containsAttribute("rentalManageDto")){
+
+            RentalManageDto rentalManageDto = new RentalManageDto();
+            rentalManageDto.setExpectedRentalOn(expectedRentalOn);
+            model.addAttribute("rentalManageDto",rentalManageDto);
+        }
+
+        return "rental/add";
+    }
+
+
+
     @PostMapping("/rental/add")
     public String save(@Valid @ModelAttribute RentalManageDto rentalManageDto, BindingResult result, RedirectAttributes ra){
         
@@ -145,7 +168,7 @@ public class RentalManageController {
         model.addAttribute("rentalStatus", RentalStatus.values());
 
         if(!model.containsAttribute("rentalManageDto")){
-            model.addAttribute("rentalManageDto", new RentalManageDto());
+            //model.addAttribute("rentalManageDto", new RentalManageDto());
         
         RentalManageDto rentalManageDto = new RentalManageDto();
         RentalManage rentalManage = this.rentalManageService.findById(Long.valueOf(id));
