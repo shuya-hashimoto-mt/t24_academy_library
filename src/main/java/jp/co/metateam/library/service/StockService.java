@@ -172,7 +172,6 @@ public class StockService {
                         RentalManage rentalManage = rentalManageList.get(r);
                         beforeDay = date.compareTo(rentalManage.getExpectedRentalOn());
                         afterDay = date.compareTo(rentalManage.getExpectedReturnOn());
-                        System.out.println(rentalManage.getExpectedReturnOn());
                         if (beforeDay < 0 || afterDay > 0) {  
                             allTrue = true;   
                         }else{    

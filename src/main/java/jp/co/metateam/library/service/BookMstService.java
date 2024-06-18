@@ -96,7 +96,7 @@ public class BookMstService {
     public boolean isValidTitle(String title, Model model) {
         if (StringUtils.isEmpty(title)) {
             model.addAttribute("errTitle", "書籍タイトルは必須");
-            return true;  
+            return true; 
         }
         return false;
     }

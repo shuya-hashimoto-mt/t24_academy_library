@@ -168,8 +168,7 @@ public class RentalManageController {
         model.addAttribute("rentalStatus", RentalStatus.values());
 
         if(!model.containsAttribute("rentalManageDto")){
-            //model.addAttribute("rentalManageDto", new RentalManageDto());
-        
+
         RentalManageDto rentalManageDto = new RentalManageDto();
         RentalManage rentalManage = this.rentalManageService.findById(Long.valueOf(id));
         
