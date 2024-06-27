@@ -204,8 +204,6 @@ public class StockService {
             Stock stock = optionalStock.orElse(new Stock());
 
             stockList.add(stock);  
-
-
         }
         return stockList;
     }
