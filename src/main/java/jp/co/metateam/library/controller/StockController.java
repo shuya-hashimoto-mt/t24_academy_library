@@ -66,7 +66,11 @@ public class StockController {
     @PostMapping("/stock/add")
     public String save(@Valid @ModelAttribute StockDto stockDto, BindingResult result, RedirectAttributes ra) {
         try {
-            if (result.hasErrors()) {
+            if(stockDto.getBookId() == null){
+                throw new Exception("書籍名は必須です");
+            }
+
+            else if (result.hasErrors()) {
                 throw new Exception("Validation error.");
             }
             // 登録処理
@@ -122,7 +126,8 @@ public class StockController {
             // 登録処理
             stockService.update(id, stockDto);
 
-            return "stock/index";
+            return "redirect:/stock/index";
+
         } catch (Exception e) {
             log.error(e.getMessage());
 
