@@ -70,7 +70,7 @@ public class StockController {
                 throw new Exception("書籍名は必須です");
             }
 
-            if (result.hasErrors()) {
+            else if (result.hasErrors()) {
                 throw new Exception("Validation error.");
             }
             // 登録処理
@@ -120,7 +120,7 @@ public class StockController {
     @PostMapping("/stock/{id}/edit")
     public String update(@PathVariable("id") String id, @Valid @ModelAttribute StockDto stockDto, BindingResult result, RedirectAttributes ra) {
         try {
-                if (result.hasErrors()) {
+            if (result.hasErrors()) {
                 throw new Exception("Validation error.");
             }
             // 登録処理
