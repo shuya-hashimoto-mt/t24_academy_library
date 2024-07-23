@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common :: meta_header('在庫登録',~{::link},~{::script})}">
+    <title th:text="${title}+' | MTLibrary'"></title>
+    <link rel="stylesheet" th:href="@{/css/book/reviewAdd.css}" />
+    <script type="text/javascript" th:src="@{/js/book/reviewAdd.js}"></script>
+</head>
+
+<body>
+    <div class="contents">
+        <div th:replace="~{common :: main_sidebar}"></div>
+        <div class="main_contents">
+            <div th:replace="~{common :: header}"></div>
+            <div class="inner_contens">
+                <div class="page_title">レビュー登録</div>
+                <div class ="book_title">書籍名:[[${book_title}]]</div> 
+                <div class="mb30 flexarea">
+                    <span class="text-red">＊は必須項目です</span>
+                    <span>
+                        <a th:href="@{/book/{id}/{title}/review(id=${book_id},title=${book_title})}" class="link">← 書籍レビューへ戻る</a>
+                    </span>
+                </div>
+
+                <form id="review_add_form" th:object="${reviewDto}" th:action="@{/book/reviewAdd}" method="post">
+                    <div class="mb30">
+                        <label for="bookSelector">評価(☆1~5)<span class="text-red asterisk">＊</span></label>
+
+                        <div class="error_msg" th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></div>
+                    </div>
+                    <div class="mb30">
+                        <label for="bookReview">書籍レビュー<span class="text-red asterisk">＊</span></label>
+                        <input type="text" id="bookReview" class="form_input" name="body" th:value="*{body}"
+                            placeholder="レビューを入力" required>
+                        <div class="error_msg" th:if="${#fields.hasErrors('body')}" th:errors="*{body}"></div>
+                    </div>
+                    <div class="btn_block">
+                        <button type="submit" id="submit_btn">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{common :: footer}"></div>
+</body>

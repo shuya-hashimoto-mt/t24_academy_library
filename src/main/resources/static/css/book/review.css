@@ -1,0 +1,72 @@
+   .reviewAdd-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 30px;
+    font-size: 18px;
+    text-align: center;
+    background-color: #9CF2D3;
+    color: #6D6D6E;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    padding: 10px 5px;
+  }
+   
+   .book_link {
+      color: #0000EE;
+      float:right;
+  }
+
+    .book_title{
+      font-size:20px;
+    }
+
+   .review_table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius:10px;
+   }
+   
+   .review_table th{
+     padding: 10px;
+     background: rgba(0,0,0,0.06);
+     padding: 13px;
+     border: solid 1px #B9B9B9;
+     color: #545454;
+     font-size: 18px;
+   }
+   
+   .review_table td{
+     text-align: left;
+     vertical-align: top;
+     background: #FFFFFF;
+     border: solid 1px #B9B9B9;
+     padding: 13px;
+     font-size: 20px;
+   }
+   
+   .review_table td:nth-child(1){
+     width: 20%;
+   }
+
+   .review_table td:nth-child(2){
+    width: 60%;
+  }
+
+  .review_table td:nth-child(3){
+    width: 20%;
+  }
+   
+   .review_table td .trash_icon{
+     width:19px;
+     float:right;
+   }
+   
+   .reivew_table td a{
+     color: #0000EE;
+   }
+   
+   

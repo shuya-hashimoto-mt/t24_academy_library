@@ -14,19 +14,24 @@ import jp.co.metateam.library.constants.Constants;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.model.Stock;
+import jp.co.metateam.library.model.Review;
+import jp.co.metateam.library.model.ReviewDto;
 import jp.co.metateam.library.repository.BookMstRepository;
 import jp.co.metateam.library.repository.StockRepository;
+import jp.co.metateam.library.repository.ReviewRepository;
 
 @Service
 public class BookMstService {
 
     private final BookMstRepository bookMstRepository;
     private final StockRepository stockRepository;
+    private final ReviewRepository reviewRepository;
     
     @Autowired
-    public BookMstService(BookMstRepository bookMstRepository, StockRepository stockRepository){
+    public BookMstService(BookMstRepository bookMstRepository, StockRepository stockRepository, ReviewRepository reviewRepository){
         this.bookMstRepository = bookMstRepository;
         this.stockRepository = stockRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public List<BookMst> findAll() {
@@ -35,6 +40,10 @@ public class BookMstService {
 
     public Optional<BookMst> findById(Long id) {
         return this.bookMstRepository.findById(id);
+    }
+
+    public List<Review> findReviewById(Long id){
+        return this.reviewRepository.findReviewById(id);
     }
 
 
@@ -107,6 +116,22 @@ public class BookMstService {
             return true;
         }
         return false;
+    }
+
+    public void reviewSave(Long id, ReviewDto reviewDto){
+        try{
+            Review review = new Review();
+            BookMst bookMst = findById(id);
+
+            review.setScore(reviewDto.getScore());
+            review.setBody(reviewDto.getBody());
+            review.setBookMst(bookMst);
+
+            //データベースへの保存
+            this.reviewRepository.save(review);
+        }catch(Exception e){
+            throw e;
+        }
     }
 }
 
