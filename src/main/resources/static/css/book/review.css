@@ -69,4 +69,49 @@
      color: #0000EE;
    }
    
+   .star-rating {
+    text-align: center;
+    vertical-align: bottom;
+    position: relative;
+    font-size: 30px;
+  }
+ 
+  .star-rating::before,
+  .star-rating::after {
+    content: "★★★★★";
+    color: #e1e1e1;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+ 
+  .star-rating::after {
+    color: #ffb448;
+    overflow: hidden;
+  }
+ 
+  /* レーティングの間隔 */
+  .star-rating[data-rate="0"]::after {
+    width: 0;
+  }
+ 
+  .star-rating[data-rate="1"]::after {
+    width: 30px;
+  }
+ 
+  .star-rating[data-rate="2"]::after {
+    width: 60px;
+  }
+ 
+  .star-rating[data-rate="3"]::after {
+    width: 90px;
+  }
+ 
+  .star-rating[data-rate="4"]::after {
+    width: 120px;
+  }
+ 
+  .star-rating[data-rate="5"]::after {
+    width: 150px;
+  }
    

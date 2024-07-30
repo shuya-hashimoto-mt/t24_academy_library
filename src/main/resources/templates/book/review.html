@@ -27,7 +27,9 @@
                             <th>登録日時</th>
                         </tr>
                         <tr th:each="review : ${reviewList}">
-                            <td>☆の画像</td>
+                            <td class="reviewStar">
+                                <span class="star-rating" th:data-rate="${review.score}"></span>
+                            </td>
                             <td th:text="${review.body}"></td>
                             <td th:inline="text">
                                 <span>[[${#dates.format(review.createdat, 'yyyy-MM-dd')}]]</span>

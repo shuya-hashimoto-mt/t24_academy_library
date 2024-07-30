@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.micrometer.common.util.StringUtils;
@@ -153,16 +154,8 @@ public class BookController {
     
     @PostMapping("/book/{id}/{title}/reviewAdd")
     public String reviewRegister(@PathVariable("id") Long id, @PathVariable("title") String title, @Valid @ModelAttribute ReviewDto reviewDto,BindingResult result, RedirectAttributes ra, Model model){
-        try{            
-            if(reviewDto.getScore() == null){
-                throw new Exception("評価は必須です");
-            }
-            
-            else if(StringUtils.isEmpty(reviewDto.getBody())){
-                throw new Exception("評価レビューは必須です");
-            }
-
-            else if(reviewDto.getBody().length() <= 140){
+        try{
+            if(reviewDto.getBody().length() > 140){
                 throw new Exception("評価レビューは140文字以下で入力してください");
             }
 
@@ -172,13 +165,14 @@ public class BookController {
             //登録処理
             this.bookMstService.reviewSave(id, reviewDto);
 
-            return "redirect:/book/review";
+            return "redirect:/book/{id}/{title}/review";
         }catch(Exception e){
             log.error(e.getMessage());
 
             ra.addFlashAttribute("reviewDto", reviewDto);
             ra.addFlashAttribute("org.springframework.validation.BindingResult.reviewDto", result);
 
+            //return "book/{id}/{title}/reviewAdd";
             return "book/reviewAdd";
         }
 

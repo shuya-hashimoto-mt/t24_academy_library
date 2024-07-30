@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
  */
 
 @Entity
-@Table(name = "Review")
+@Table(name = "review")
 public class Review {
 
     @Id
@@ -28,7 +28,7 @@ public class Review {
     @Column(name = "id")
     private Long id;
 
-    /** 登録日時 */
+     /** 登録日時 */
     @Column(name = "created_at", nullable = false)
     private Timestamp created_at;
 

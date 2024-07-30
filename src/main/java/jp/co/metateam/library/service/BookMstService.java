@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import java.sql.Timestamp;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,10 +120,15 @@ public class BookMstService {
         return false;
     }
 
-    public void reviewSave(Long id, ReviewDto reviewDto){
+    @Transactional 
+    public void reviewSave(Long id, ReviewDto reviewDto)throws Exception{
         try{
             Review review = new Review();
-            BookMst bookMst = findById(id);
+            BookMst bookMst = findById(id).orElse(null);
+            if (bookMst == null) {
+                throw new Exception("BookMst record not found.");
+            }
+            review.setCreatedat(new Timestamp(System.currentTimeMillis()));
 
             review.setScore(reviewDto.getScore());
             review.setBody(reviewDto.getBody());

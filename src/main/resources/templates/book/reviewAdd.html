@@ -22,16 +22,29 @@
                     </span>
                 </div>
 
-                <form id="review_add_form" th:object="${reviewDto}" th:action="@{/book/reviewAdd}" method="post">
+                <form id="review_add_form" th:object="${reviewDto}" th:action="@{/book/{id}/{title}/reviewAdd(id=${book_id},title=${book_title})}" method="post">
                     <div class="mb30">
-                        <label for="bookSelector">評価(☆1~5)<span class="text-red asterisk">＊</span></label>
-
+                        <label for="title">評価（☆1~5）<span class="text-red asterisk">＊</span></label>
+                        <br>
+                            <div class="rate-form">
+                                <input id="star5" type="radio" th:field="*{score}" th:value="5">
+                                <label for="star5">★</label>
+                                <input id="star4" type="radio" th:field="*{score}" th:value="4">
+                                <label for="star4">★</label>
+                                <input id="star3" type="radio" th:field="*{score}" th:value="3">
+                                <label for="star3">★</label>
+                                <input id="star2" type="radio" th:field="*{score}" th:value="2">
+                                <label for="star2">★</label>
+                                <input id="star1" type="radio" th:field="*{score}" th:value="1">
+                                <label for="star1">★</label>
+                            </div>
+                        </br>
                         <div class="error_msg" th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></div>
                     </div>
                     <div class="mb30">
                         <label for="bookReview">書籍レビュー<span class="text-red asterisk">＊</span></label>
                         <input type="text" id="bookReview" class="form_input" name="body" th:value="*{body}"
-                            placeholder="レビューを入力" required>
+                            placeholder="レビューを入力">
                         <div class="error_msg" th:if="${#fields.hasErrors('body')}" th:errors="*{body}"></div>
                     </div>
                     <div class="btn_block">
