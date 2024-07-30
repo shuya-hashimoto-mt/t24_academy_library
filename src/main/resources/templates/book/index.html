@@ -21,6 +21,7 @@
                             <th>書籍名</th>
                             <th>ISBN</th>
                             <th>利用可能在庫数</th>
+                            <th>レビュー</th>
                         </tr>
                         <tr th:each="bookMst : ${bookMstList}">
                             <td th:inline="text">
@@ -35,6 +36,7 @@
                                 <span class="stockcount"> [[${bookMst.stockCount}]]冊</span>
                                 <a th:href="@{/stock/add}">在庫追加</a>
                             </td>
+                            <td><a th:href="@{/book/{id}/{title}/review(id=*{bookMst.id},title=*{bookMst.title})}">レビューを見る</a></td>
                         </tr>
                     </table>
                 </div>

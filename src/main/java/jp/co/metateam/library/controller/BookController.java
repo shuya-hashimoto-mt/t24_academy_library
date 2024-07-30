@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.service.BookMstService;
+import jp.co.metateam.library.model.Review;
+import jp.co.metateam.library.model.ReviewDto;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -120,5 +124,57 @@ public class BookController {
 
             return "book/edit";
         }
+    }
+
+    @GetMapping("/book/{id}/{title}/review")
+    public String review (@PathVariable("id") Long id, @PathVariable("title") String title, Model model){
+        List<Review> bookReviewList = this.bookMstService.findReviewById(id);
+
+        model.addAttribute("book_id",id);
+        model.addAttribute("book_title", title);
+        model.addAttribute("reviewList",bookReviewList);
+
+        return "book/review";
+    }
+
+
+    @GetMapping("/book/{id}/{title}/reviewAdd")
+    public String reviewAdd(@PathVariable("id") Long id, @PathVariable("title") String title, Model model) {
+        ReviewDto reviewDto = new ReviewDto();
+
+        reviewDto.setBook_id(id);
+
+        model.addAttribute("book_id",id);
+        model.addAttribute("book_title", title);
+        model.addAttribute("reviewDto", reviewDto);
+    
+        return "book/reviewAdd";
+    }
+
+    
+    @PostMapping("/book/{id}/{title}/reviewAdd")
+    public String reviewRegister(@PathVariable("id") Long id, @PathVariable("title") String title, @Valid @ModelAttribute ReviewDto reviewDto,BindingResult result, RedirectAttributes ra, Model model){
+        try{
+            if(reviewDto.getBody().length() > 140){
+                throw new Exception("評価レビューは140文字以下で入力してください");
+            }
+
+            else if(result.hasErrors()){
+                throw new Exception("Validation error.");
+            }
+            //登録処理
+            this.bookMstService.reviewSave(id, reviewDto);
+
+            return "redirect:/book/{id}/{title}/review";
+        }catch(Exception e){
+            log.error(e.getMessage());
+
+            ra.addFlashAttribute("reviewDto", reviewDto);
+            ra.addFlashAttribute("org.springframework.validation.BindingResult.reviewDto", result);
+
+            //return "book/{id}/{title}/reviewAdd";
+            return "book/reviewAdd";
+        }
+
     }
 }
